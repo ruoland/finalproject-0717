@@ -1,7 +1,7 @@
 # config.py
 
 # 데이터베이스 설정
-DATABASE_URL = "postgresql://postgres.rhidgqfdbgyqxvoylrsv:비밀번호@aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres"
+DATABASE_URL = "postgresql://postgres.rhidgqfdbgyqxvoylrsv:DaFTR6nlczJx31kj@aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres"
 # 로깅 설정
 LOG_LEVEL = "INFO"
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
