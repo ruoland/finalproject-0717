@@ -1,0 +1,13 @@
+type,data1,data2,data3,data4,data5,data6
+event,2024-07-17,09:00,12:00,work,,
+event,2024-07-17,14:00,16:00,meeting,,
+event,2024-07-17,00:00,07:00,sleeping,,
+event,2024-06-15,10:00,11:30,doctor appointment,,
+hobby,독서,18,21,3,2,2024-07-14
+hobby,요가,6,9,2,1.5,2024-07-15
+hobby,그림그리기,14,17,1,2,2024-07-10
+task,보고서 작성,2024-07-19,4,True,False,
+task,과제,2024-07-23,3,False,False,
+task,이메일 확인,2024-07-18,1,False,True,2024-07-16
+task,프로젝트 계획,2024-07-10,3,True,True,2024-07-09
+task,A과제,2024-07-15,3,True,True,2024-07-14

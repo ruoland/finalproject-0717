@@ -1,0 +1,9 @@
+BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:생일
+X-WR-TIMEZONE:UTC
+X-WR-CALDESC:Google 주소록에 등록된 사람들의 생일\, 기념일\, 기타 일정 날짜를 표시합니다.
+END:VCALENDAR
