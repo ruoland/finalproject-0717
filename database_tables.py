@@ -1,5 +1,6 @@
 from sqlalchemy.sql.sqltypes import DateTime
-from sqlalchemy import create_engine,  String, ForeignKey, Text, Time, Date
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import create_engine,  String, ForeignKey, Text, Time, Date, Integer, UniqueConstraint
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Mapped, mapped_column
@@ -9,7 +10,9 @@ from contextlib import contextmanager
 from sqlalchemy.orm import sessionmaker
 from config import DATABASE_URL
 # 데이터베이스 연결
-
+import uuid
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.sql import text
 engine = create_engine(DATABASE_URL)
 SessionFactory = sessionmaker(bind=engine)
 
@@ -41,7 +44,7 @@ def session_scope():
 class User(Base):
     __tablename__ = 'users'
     #기본 키
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()"))
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(60), nullable=False)
@@ -52,11 +55,10 @@ class User(Base):
     schedules: Mapped[list["Schedule"]] = relationship('Schedule', back_populates='user')
     checklists: Mapped[list["Checklist"]] = relationship('Checklist', back_populates='user')
     hobbies: Mapped[list["Hobby"]] = relationship("Hobby", back_populates="user")
-
 class Diary(Base):
     __tablename__ = 'diaries'
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey('users.id'), nullable=False)
     write_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     subtitle: Mapped[str] = mapped_column(nullable=False)
     content: Mapped[str] = mapped_column(nullable=False)
@@ -78,7 +80,7 @@ class Image(Base):
 class Checklist(Base):
     __tablename__ = 'checklist'
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey('users.id'), nullable=False)
     write_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     content: Mapped[str] = mapped_column(nullable=False)
     deadline: Mapped[datetime] = mapped_column(nullable=False) 
@@ -91,7 +93,7 @@ class Checklist(Base):
 class Hobby(Base):
     __tablename__ = 'hobby'
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey('users.id'), nullable=False)
     name : Mapped[str] = mapped_column(nullable=False)
     preferred_time_start : Mapped[time] = mapped_column(Time, nullable=True) # 자동 추천 선호 시간
     preferred_time_end : Mapped[time] = mapped_column(Time, nullable=True) #선호 시간
@@ -102,8 +104,7 @@ class Hobby(Base):
 class Schedule(Base):
     __tablename__ = 'schedule'
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False)
-    date: Mapped[datetime] = mapped_column(nullable=False)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey('users.id'), nullable=False)
     subtitle: Mapped[str] = mapped_column(nullable=False)
     content: Mapped[str] = mapped_column(nullable=True)
     start_time: Mapped[datetime] = mapped_column(default=func.now(), nullable=False)
@@ -113,7 +114,7 @@ class Schedule(Base):
     is_alarm: Mapped[bool] = mapped_column(default=True, nullable=False)
     alarm_time: Mapped[datetime] = mapped_column(nullable=True)
     user: Mapped["User"] = relationship("User", back_populates="schedules")
-    
+
 class Holiday(Base):
     __tablename__ = 'anniversaries'
 
